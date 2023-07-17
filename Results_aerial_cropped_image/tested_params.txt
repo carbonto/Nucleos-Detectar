@@ -1,0 +1,20 @@
+
+Estos parametros probablemente sean los mejores rangos de umbral 
+pero tal vez se puedan ajustar un poco mas
+#Rangos para prueba.png
+lower = np.array([9, 14, 163])
+upper = np.array([84, 51, 255])
+
+En operaciones morfologicas se usar una elipse de 5x5 y luego un cierre
+
+# apply morphology
+size = 5 
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (size,size))
+morph = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
+
+los contornos se dibujan de espesor minimo es decir 1
+
+#draw contours
+thick_countours = 1
+contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+cv2.drawContours(result, contours, -1, (0,255,0), thick_countours)

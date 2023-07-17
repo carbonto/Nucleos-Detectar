@@ -9,12 +9,12 @@ def detectar_nucleos(image):
     # Definir rangos de colores para la arena
 
     #Rangos arena para sin_palmeras.jpg
-    # lower_sand = np.array([16, 12, 105])
-    # upper_sand = np.array([30, 68, 245])
+    lower_sand = np.array([16, 12, 105])
+    upper_sand = np.array([30, 68, 245])
 
     #Rangos arena para aerea_full.jpg
-    lower_sand = np.array([6, 15, 221])
-    upper_sand = np.array([179, 255, 255])
+    # lower_sand = np.array([6, 15, 221])
+    # upper_sand = np.array([179, 255, 255])
 
     # lower_sand = np.array([10, 50, 50])
     # upper_sand = np.array([30, 255, 255])
@@ -52,7 +52,7 @@ def detectar_nucleos(image):
     return image
 
 # Cargar la imagen
-image_path = "aerea_full.jpg"
+image_path = "sin_palmeras.jpg"
 image = cv2.imread(image_path)
 
 # Procesar la imagen para eliminar la arena y detectar los núcleos
