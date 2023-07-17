@@ -1,11 +1,18 @@
 import cv2
 import numpy as np
+import argparse
 
 def nothing(x):
     pass
 
+#Load image with argparse
+
+ap = argparse.ArgumentParser()
+ap.add_argument("--image", required=True, help="Path to the image")
+args = vars(ap.parse_args())
+
 # Load image
-image_path = "aerea_full.jpg"
+image_path = args["image"]
 image = cv2.imread(image_path)
 
 #Resize image to 1280x720
