@@ -1,5 +1,18 @@
 # Nucleos-Detectar
 
+## Indice 
+- [Nucleos-Detectar](#nucleos-detectar)
+  - [Indice](#indice)
+  - [Requerimientos](#requerimientos)
+  - [Rangos threshold para detección de nucleos](#rangos-threshold-para-detección-de-nucleos)
+
+## Requerimientos
+- Python 3.6
+- OpenCV 3.4.2
+- Numpy 1.16.4
+- Matplotlib 3.1.0
+
+
 ## Rangos threshold para detección de nucleos
 Para saber los rangos de threshold en hsv para realizar la detección de nucleos, se utilizó el siguiente script:
 
@@ -10,3 +23,13 @@ El cual se ejecuta de la siguiente manera:
 ``` python bgr_2_hsv.py --image <path_to_image> ```
 
 Nos permite de una manera visual a través de un menú simple saber los rangos de threshold que vamos a utilziar posteriormente para eliminar la arena de las imagenes para poder identificar cada uno de los elementos de la playa 
+
+## Eliminar arena de la imagen
+Para poder detectar los nucleos de la playa se ha realizado un proceso de eliminacion de la arena de la playa u otros detalles que no eran relevantes para la detección de los diversos nucleos de persona u objetos en la playa 
+
+Para realizar este proceso se ha utilizado el siguiente script:
+
+``` substract.py ```
+
+
+## Resultados
