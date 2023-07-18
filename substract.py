@@ -22,9 +22,10 @@ upper = np.array([30, 68, 245])
 thresh = cv2.inRange(img, lower, upper)
 
 # apply morphology
-size = 20
+size = 15
 kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (size,size))
 morph = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
+
 
 # invert morp image
 mask = 255 - morph
@@ -36,9 +37,9 @@ result = cv2.bitwise_and(img, img, mask=mask)
 result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
 #draw contours
-thick_countours = 1
-contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-cv2.drawContours(result, contours, -1, (0,255,0), thick_countours)
+# thick_countours = 1
+# contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+# cv2.drawContours(result, contours, -1, (0,255,0), thick_countours)
 
 
 

@@ -1,0 +1,14 @@
+Parametros del umbral ajustados
+
+lower = np.array([16, 12, 105])
+upper = np.array([30, 68, 245])
+
+En operaciones morfologicas se utiliza una elipse de 20x20 y 15x15 y luego 
+un cierre. El tamaño de 20 y 15 dependiendo del caso es mejor o peor pero no se 
+ha determinado cual sería el mas optimo
+
+# apply morphology
+size = 20
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (size,size))
+morph = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
+
