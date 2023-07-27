@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+from tkinter import filedialog
+import tkinter as tk
 
 #To get de color ranges of each image each image has lower numpy array and upper numpy array
 def get_color_ranges(file):
@@ -57,7 +59,7 @@ def main():
         if M['m00'] != 0:
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
-            cv2.drawContours(result, [i], -1, (0, 255, 0), 2)
+            cv2.drawContours(result, [i], -1, (0, 255, 0), 1)
             cv2.circle(result, (cx, cy), 7, (0, 0, 255), -1)
             value = value + 1
             cv2.putText(result, str(value), (cx - 10, cy - 10),
