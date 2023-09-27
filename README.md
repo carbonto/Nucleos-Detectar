@@ -39,5 +39,5 @@ Se encuentran diversas carpetas con los resultados pero los mas relevantes son l
 
 ### Coordenadas de cada nucleo
 
-En las imagenes podemos observar que se calcula el centroide de los nucleos detectados, de cada centroide tiene un numero que es la posición que ocupan las coordenada en el array 
+En las imagenes podemos observar que se calcula el centroide de los nucleos detectados, de cada centroide tiene un numero que es la posición que ocupan las coordenada en el array x_coords o y_coords. Los cuales se pueden guardar en un archivo .txt modificando una linea de codigo que se encuentra en el script ``` substract.py ```, también se puede consultar directamente el valor en el array en el codigo.
 
