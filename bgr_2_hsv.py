@@ -5,7 +5,7 @@ import argparse
 def nothing(x):
     pass
 
-#Load image with argparse
+#Load image with argparse1
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--image", required=True, help="Path to the image")

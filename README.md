@@ -33,3 +33,11 @@ Para realizar este proceso se ha utilizado el siguiente script:
 
 
 ## Resultados
+
+### Imagenes 
+Se encuentran diversas carpetas con los resultados pero los mas relevantes son los que se encuentra en la carpeta ``` Results_benidorm_images ``` donde se encuentran los resultados de la detección de nucleos de las imagenes de la playa. Especificando el tamaño de la elipse utilizada para la apertura y cierre.
+
+### Coordenadas de cada nucleo
+
+En las imagenes podemos observar que se calcula el centroide de los nucleos detectados, de cada centroide tiene un numero que es la posición que ocupan las coordenada en el array 
+
