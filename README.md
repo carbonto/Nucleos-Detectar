@@ -5,6 +5,7 @@
   - [Indice](#indice)
   - [Requerimientos](#requerimientos)
   - [Rangos threshold para detección de nucleos](#rangos-threshold-para-detección-de-nucleos)
+  - [Eliminar arena de la imagen](#eliminar-arena-de-la-imagen)
 
 ## Requerimientos
 - Python 3.6
@@ -30,7 +31,10 @@ Para poder detectar los nucleos de la playa se ha realizado un proceso de elimin
 Para realizar este proceso se ha utilizado el siguiente script:
 
 ``` substract.py ```
+## Pruebas con red neuronal SAM(Segment Anything Model)
+Se han realizado pruebas de segmentación con la SAM ya que este modelo nos permite realizar una segmentación de la imagen sin un entrenamiento previo de lo que, queremos detectar en la imagen. Ya que el modelo es de gran tamaño se han realizado las pruebas en google colab, para ello se ha utilizado el siguiente script:
 
+``` Uso_de_SAM(meta)_segmentacion_playas.ipynb```
 
 ## Resultados
 
@@ -41,3 +45,7 @@ Se encuentran diversas carpetas con los resultados pero los mas relevantes son l
 
 En las imagenes podemos observar que se calcula el centroide de los nucleos detectados, de cada centroide tiene un numero que es la posición que ocupan las coordenada en el array x_coords o y_coords. Los cuales se pueden guardar en un archivo .txt modificando una linea de codigo que se encuentra en el script ``` substract.py ```, también se puede consultar directamente el valor en el array en el codigo.
 
+### Pruebas con red neuronal SAM(Segment Anything Model)
+Las pruebas realizadas con la red neuronal SAM se encuentra en el siguiente enlace de onedrive:
+
+https://unialicante-my.sharepoint.com/:f:/g/personal/laragones_mscloud_ua_es/EhXngXnfSbZBmffSeeqtxbgBgTHLTao7bFaDKtzAtlACxg?e=LwCjYk
