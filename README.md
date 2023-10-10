@@ -30,6 +30,10 @@ Para poder detectar los nucleos de la playa se ha realizado un proceso de elimin
 
 Para realizar este proceso se ha utilizado el siguiente script:
 
+``` substract_no_centroid.py ```
+
+Además se ha realizado otro script en el cual de los contornos detectados se calcula el centroide de cada uno para poder calcular las distancias entre ellos de esa forma poder identificar los grupos de personas que se encuentran en la playa. Este script es el siguiente:
+
 ``` substract.py ```
 ## Pruebas con red neuronal SAM(Segment Anything Model)
 Se han realizado pruebas de segmentación con la SAM ya que este modelo nos permite realizar una segmentación de la imagen sin un entrenamiento previo de lo que, queremos detectar en la imagen. Ya que el modelo es de gran tamaño se han realizado las pruebas en google colab, para ello se ha utilizado el siguiente script:
@@ -40,6 +44,8 @@ Se han realizado pruebas de segmentación con la SAM ya que este modelo nos perm
 
 ### Imagenes 
 Se encuentran diversas carpetas con los resultados pero los mas relevantes son los que se encuentra en la carpeta ``` Results_benidorm_images ``` donde se encuentran los resultados de la detección de nucleos de las imagenes de la playa. Especificando el tamaño de la elipse utilizada para la apertura y cierre.
+
+También se encuentran las imagenes sin el calculo de los centroides en la carpeta ``` Results_benidorm_images_without_centroids ```.
 
 ### Coordenadas de cada nucleo
 
