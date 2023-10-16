@@ -48,9 +48,9 @@ Se han realizado pruebas de segmentación con la SAM ya que este modelo nos perm
 ## Resultados
 
 ### Imagenes 
-Se encuentran diversas carpetas con los resultados pero los mas relevantes son los que se encuentra en la carpeta ``` Results_benidorm_images ``` donde se encuentran los resultados de la detección de nucleos de las imagenes de la playa. Especificando el tamaño de la elipse utilizada para la apertura y cierre.
+Se encuentran diversas carpetas con los resultados pero los mas relevantes son los que se encuentra en la carpeta ``` Results_benidorm_centroids ``` donde se encuentran los resultados de la detección de nucleos de las imagenes de la playa. Especificando el tamaño de la elipse utilizada para la apertura y cierre.
 
-También se encuentran las imagenes sin el calculo de los centroides en la carpeta ``` Results_benidorm_images_without_centroids ```.
+También se encuentran las imagenes sin el calculo de los centroides en la carpeta ``` Results_benidorm_no_centroids ```.
 
 ### Coordenadas de cada nucleo
 
