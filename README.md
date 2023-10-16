@@ -6,6 +6,11 @@
   - [Requerimientos](#requerimientos)
   - [Rangos threshold para detección de nucleos](#rangos-threshold-para-detección-de-nucleos)
   - [Eliminar arena de la imagen](#eliminar-arena-de-la-imagen)
+  - [Pruebas con red neuronal SAM(Segment Anything Model)](#pruebas-con-red-neuronal-samsegment-anything-model)
+  - [Resultados](#resultados)
+    - [Imagenes](#imagenes)
+    - [Coordenadas de cada nucleo](#coordenadas-de-cada-nucleo)
+    - [Pruebas con red neuronal SAM(Segment Anything Model)](#pruebas-con-red-neuronal-samsegment-anything-model-1)
 
 ## Requerimientos
 - Python 3.6
