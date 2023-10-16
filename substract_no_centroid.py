@@ -11,14 +11,17 @@ def get_color_ranges(file):
         'prueba.png': (np.array([9, 14, 163]), np.array([84, 51, 255])),
         'captura_benidorm_1.JPG': (np.array([12, 31, 114]), np.array([82, 61, 223])),
         'partially_seg_SAM.jpg': (np.array([0, 158, 139]), np.array([179, 255, 255])),
-        '1_beni.jpg': (np.array([14, 14, 137]), np.array([21, 108, 220])),
-        '2_beni.jpg': (np.array([14, 40, 120]), np.array([24, 86, 215])),
-        '3_beni.jpg': (np.array([11, 42, 117]), np.array([92, 93, 200])),
+        'Raw_Images/1_beni.jpg': (np.array([14, 14, 137]), np.array([21, 108, 220])),
+        'Raw_Images/2_beni.jpg': (np.array([14, 40, 120]), np.array([24, 86, 215])),
+        'Raw_Images/3_beni.jpg': (np.array([11, 42, 117]), np.array([92, 93, 200])),
+        'Raw_Images/1_posti.jpg': (np.array([11, 27, 122]), np.array([28, 77, 213])),
+        'Raw_Images/2_posti.jpg': (np.array([8, 8, 152]), np.array([45, 69, 219])),
+        'Raw_Images/3_posti.jpg': (np.array([11, 43, 107]), np.array([26, 105, 181])),
     }
     return color_ranges.get(file, (None, None))
 def main():
     # Read image
-    file = '2_beni.jpg'
+    file = 'Raw_Images/3_posti.jpg'
     img = cv2.imread(file)
     img= cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     hh, ww = img.shape[:2]
@@ -37,7 +40,7 @@ def main():
     thresh = cv2.inRange(img, lower, upper)
 
     # apply morphology
-    size = 15     # can change this value depends the image
+    size = 5    # can change this value depends the image
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (size,size),anchor=(size//2,size//2))
     morph = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel, iterations=1)
 
