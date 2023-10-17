@@ -21,7 +21,7 @@ def get_color_ranges(file):
     return color_ranges.get(file, (None, None))
 def main():
     # Read image
-    file = 'Raw_Images/3_posti.jpg'
+    file = 'Raw_Images/3_beni.jpg'
     img = cv2.imread(file)
     img= cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     hh, ww = img.shape[:2]
@@ -40,7 +40,7 @@ def main():
     thresh = cv2.inRange(img, lower, upper)
 
     # apply morphology
-    size = 5    # can change this value depends the image
+    size = 10    # can change this value depends the image
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (size,size),anchor=(size//2,size//2))
     morph = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel, iterations=1)
 
