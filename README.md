@@ -7,6 +7,7 @@
   - [Rangos threshold para detección de nucleos](#rangos-threshold-para-detección-de-nucleos)
   - [Eliminar arena de la imagen](#eliminar-arena-de-la-imagen)
   - [Pruebas con red neuronal SAM(Segment Anything Model)](#pruebas-con-red-neuronal-samsegment-anything-model)
+  - [Calculo distancia en pixeles](#calculo-distancia-en-pixeles)
   - [Resultados](#resultados)
     - [Imagenes](#imagenes)
     - [Coordenadas de cada nucleo](#coordenadas-de-cada-nucleo)
@@ -17,8 +18,9 @@
 - OpenCV 3.4.2
 - Numpy 1.16.4
 - Matplotlib 3.1.0
-
-
+- Scipy 1.3.0
+- Imutils 0.5.2
+- argparse 1.1
 ## Rangos threshold para detección de nucleos
 Para saber los rangos de threshold en hsv para realizar la detección de nucleos, se utilizó el siguiente script:
 
@@ -31,7 +33,7 @@ El cual se ejecuta de la siguiente manera:
 Nos permite de una manera visual a través de un menú simple saber los rangos de threshold que vamos a utilziar posteriormente para eliminar la arena de las imagenes para poder identificar cada uno de los elementos de la playa 
 
 ## Eliminar arena de la imagen
-Para poder detectar los nucleos de la playa se ha realizado un proceso de eliminacion de la arena de la playa u otros detalles que no eran relevantes para la detección de los diversos nucleos de persona u objetos en la playa 
+Para poder detectar los nucleos de la playa se ha realizado un proceso de eliminacion de la arena de la playa u otros detalles que no eran relevantes para la detección de los diversos nucleos de persona u objetos en la playa.Además de detectar los diversos contornos y numeración de cada uno de los posibles nucleos descartando los contornos muy grandes o muy pequeños para eliminar posible ruido.
 
 Para realizar este proceso se ha utilizado el siguiente script:
 
@@ -44,6 +46,13 @@ Además se ha realizado otro script en el cual de los contornos detectados se ca
 Se han realizado pruebas de segmentación con la SAM ya que este modelo nos permite realizar una segmentación de la imagen sin un entrenamiento previo de lo que, queremos detectar en la imagen. Ya que el modelo es de gran tamaño se han realizado las pruebas en google colab, para ello se ha utilizado el siguiente script:
 
 ``` Uso_de_SAM(meta)_segmentacion_playas.ipynb```
+## Calculo distancia en pixeles
+Para el calculo de las distancias se han testeado diferentes formas para poder saber una distancia aproximada. 
+
+En este caso se han calculado 5 puntos en cada contorno que son 4 esquinas y el centroide y de ahí se trazan lineas con los otros nucleos que hay en la imagen.
+Para calcular la distancia en pixeles entre los nucleos se ha utilizado el siguiente script:
+
+``` find_distancepx.py```
 
 ## Resultados
 

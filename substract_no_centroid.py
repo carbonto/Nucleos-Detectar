@@ -1,7 +1,60 @@
+from __future__ import print_function
 import cv2
 import numpy as np
-from tkinter import filedialog
-import tkinter as tk
+from imutils import perspective
+from imutils import contours
+import imutils
+import argparse
+from scipy.spatial import distance as dist
+
+def order_points_old(pts):
+    # initialize a list of coordinates that will be ordered
+    # such that the first entry in the list is the top-left,
+    # the second entry is the top-right, the third is the
+    # bottom-right, and the fourth is the bottom-left
+    rect = np.zeros((4, 2), dtype="float32")
+
+    # the top-left point will have the smallest sum, whereas
+    # the bottom-right point will have the largest sum
+    s = pts.sum(axis=1)
+    rect[0] = pts[np.argmin(s)]
+    rect[2] = pts[np.argmax(s)]
+
+    # now, compute the difference between the points, the
+    # top-right point will have the smallest difference,
+    # whereas the bottom-left will have the largest difference
+    diff = np.diff(pts, axis=1)
+    rect[1] = pts[np.argmin(diff)]
+    rect[3] = pts[np.argmax(diff)]
+
+    # return the ordered coordinates
+    return rect
+
+##### This way works better in our case
+def order_points(pts):
+    # sort the points based on their x-coordinates
+	xSorted = pts[np.argsort(pts[:, 0]), :]
+	# grab the left-most and right-most points from the sorted
+	# x-roodinate points
+	leftMost = xSorted[:2, :]
+	rightMost = xSorted[2:, :]
+	# now, sort the left-most coordinates according to their
+	# y-coordinates so we can grab the top-left and bottom-left
+	# points, respectively
+	leftMost = leftMost[np.argsort(leftMost[:, 1]), :]
+	(tl, bl) = leftMost
+	# now that we have the top-left coordinate, use it as an
+	# anchor to calculate the Euclidean distance between the
+	# top-left and right-most points; by the Pythagorean
+	# theorem, the point with the largest distance will be
+	# our bottom-right point
+	D = dist.cdist(tl[np.newaxis], rightMost, "euclidean")[0]
+	(br, tr) = rightMost[np.argsort(D)[::-1], :]
+	# return the coordinates in top-left, top-right,
+	# bottom-right, and bottom-left order
+	return np.array([tl, tr, br, bl], dtype="float32")
+
+
 
 #To get de color ranges of each image each image has lower numpy array and upper numpy array
 def get_color_ranges(file):
@@ -20,6 +73,13 @@ def get_color_ranges(file):
     }
     return color_ranges.get(file, (None, None))
 def main():
+
+    # construct the argument parse and parse the arguments
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-n", "--new", type=int, default=-1,
+	help="whether or not the new order points should should be used")
+    args = vars(ap.parse_args())
+
     # Read image
     file = 'Raw_Images/3_beni.jpg'
     img = cv2.imread(file)
@@ -56,8 +116,63 @@ def main():
 
     #draw contours
     thick_countours = 1
-    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)  ## External better than tree for this case because we only want the external contour
-    cv2.drawContours(result, contours, -1, (0,255,0), thick_countours)
+    cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)  ## External better than tree for this case because we only want the external contour
+    #cv2.drawContours(result, cnts, -1, (0,255,0), thick_countours)
+
+    cnts = cnts[0] if imutils.is_cv4() else cnts[1]
+
+    # sort the contours from left-to-right and initialize the bounding box
+    # point colors
+    (cnts, _) = contours.sort_contours(cnts)
+    colors = ((0, 0, 255), (240, 0, 159), (255, 0, 0), (255, 255, 0))
+
+    # loop over the contours individually
+    for (i, c) in enumerate(cnts):
+        # if the contour is not sufficiently large, ignore it
+        print(cv2.contourArea(c))
+        if cv2.contourArea(c) < 100 or cv2.contourArea(c) > 10000:
+            continue
+        
+        # compute the rotated bounding box of the contour, then
+        # draw the contours
+        box = cv2.minAreaRect(c)
+        box = cv2.cv.BoxPoints(box) if imutils.is_cv2() else cv2.boxPoints(box)
+        box = np.array(box, dtype="int")
+        cv2.drawContours(result, [box], -1, (0, 255, 0), thick_countours)
+
+        # show the original coordinates
+        print("Object #{}:".format(i + 1))
+        #print(box)
+
+        # order the points in the contour such that they appear
+        # in top-left, top-right, bottom-right, and bottom-left
+        # order, then draw the outline of the rotated bounding
+        # box
+        rect = order_points_old(box)
+
+        # check to see if the new method should be used for
+        # ordering the coordinates
+        if args["new"] > 0:
+            rect = perspective.order_points(box)
+
+        # show the re-ordered coordinates
+        print(rect.astype("int"))
+        print("")
+
+        # loop over the original points and draw them
+        size_points = 2
+        for ((x, y), color) in zip(rect, colors):
+            cv2.circle(result, (int(x), int(y)), size_points, color, -1)
+        
+        # draw the object num at the top-left corner
+        size_object = 0.4
+        cv2.putText(result, "Object #{}".format(i + 1),
+		    (int(rect[0][0] - 15), int(rect[0][1] - 15)),
+		    cv2.FONT_HERSHEY_SIMPLEX, size_object, (255, 255, 255), 2)
+        # show the image
+        # cv2.imshow("Image", result)
+        # cv2.waitKey(0)
+
 
     cv2.imwrite('beach_thresh.jpg', thresh)
     cv2.imwrite('beach_morph.jpg', morph)

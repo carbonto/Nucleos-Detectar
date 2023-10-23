@@ -165,7 +165,7 @@ def main():
             cv2.circle(result, (int(x), int(y)), size_points, color, -1)
         
         # draw the object num at the top-left corner
-        size_object = 0.5
+        size_object = 0.4
         cv2.putText(result, "Object #{}".format(i + 1),
 		    (int(rect[0][0] - 15), int(rect[0][1] - 15)),
 		    cv2.FONT_HERSHEY_SIMPLEX, size_object, (255, 255, 255), 2)
