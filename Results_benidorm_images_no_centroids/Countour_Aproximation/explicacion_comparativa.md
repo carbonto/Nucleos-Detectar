@@ -1,4 +1,4 @@
-Realizar mas pruebas con el codigo 
+Es la segunda mejor opción pero finalmente se utilizó otro metodo. Este metodo se podría profundizar mas ajustado en valor de epsilon.
 
 Modificacion realizada en el codigo 
 
