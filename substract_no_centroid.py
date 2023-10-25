@@ -9,6 +9,9 @@ from scipy.spatial import distance as dist
 import PySimpleGUI as sg
 import os
 
+### Global variables for contours
+MIN_CONTOUR_AREA = 100
+MAX_CONTOUR_AREA = 10000
 
 def order_points_old(pts):
     # initialize a list of coordinates that will be ordered
@@ -78,7 +81,7 @@ def get_color_ranges(file):
     }
     return color_ranges.get(file_name, (None, None))
 
-def process_image(file,size,show_object):
+def process_image(file,size,show_object,show_centroid,save_image,show_results):
     # Load image
     img = cv2.imread(file)
     img= cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -121,13 +124,14 @@ def process_image(file,size,show_object):
     # sort the contours from left-to-right and initialize the bounding box
     # point colors
     (cnts, _) = contours.sort_contours(cnts)
-    colors = ((0, 0, 255), (240, 0, 159), (255, 0, 0), (255, 255, 0))
-
+    #colors = ((0, 0, 255), (240, 0, 159), (255, 0, 0), (255, 255, 0))
+    colors = ((0, 0, 255), (240, 0, 159), (0, 165, 255), (255, 255, 0),
+        (255, 0, 255))
     # loop over the contours individually
     for (i, c) in enumerate(cnts):
         # if the contour is not sufficiently large, ignore it
         print(cv2.contourArea(c))
-        if cv2.contourArea(c) < 100 or cv2.contourArea(c) > 10000:
+        if cv2.contourArea(c) < MIN_CONTOUR_AREA or cv2.contourArea(c) > MAX_CONTOUR_AREA:
             continue
         
         # compute the rotated bounding box of the contour, then
@@ -147,6 +151,14 @@ def process_image(file,size,show_object):
         # box 
         rect = perspective.order_points(box)
 
+        if show_centroid:
+            center_x = int((rect[0][0] + rect[1][0] + rect[2][0] + rect[3][0]) / 4)
+            center_y = int((rect[0][1] + rect[1][1] + rect[2][1] + rect[3][1]) / 4)
+
+            # Dibujar un círculo en el centro
+            cv2.circle(result, (center_x, center_y), 2, (0, 255, 0), -1)
+
+
         # show the re-ordered coordinates
         print(rect.astype("int"))
         print("")
@@ -159,25 +171,25 @@ def process_image(file,size,show_object):
         if show_object:
             # draw the object num at the top-left corner
             size_object = 0.4
-            cv2.putText(result, "Object #{}".format(i + 1),
+            cv2.putText(result, "Nucleo#{}".format(i + 1),
                 (int(rect[0][0] - 15), int(rect[0][1] - 15)),
                 cv2.FONT_HERSHEY_SIMPLEX, size_object, (255, 255, 255), 2)
             # show the image
             # cv2.imshow("Image", result)
             # cv2.waitKey(0)
 
-    
-    cv2.imwrite('beach_thresh.jpg', thresh)
-    cv2.imwrite('beach_morph.jpg', morph)
-    cv2.imwrite('beach_mask.jpg', mask)
-    cv2.imwrite('beach_result.jpg', result)
-
-    cv2.imshow('thresh', thresh)
-    cv2.imshow('morph', morph)
-    cv2.imshow('mask', mask)
-    cv2.imshow('result', result)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if save_image:
+        cv2.imwrite('beach_thresh.jpg', thresh)
+        cv2.imwrite('beach_morph.jpg', morph)
+        cv2.imwrite('beach_mask.jpg', mask)
+        cv2.imwrite('beach_result.jpg', result)
+    if show_results:
+        cv2.imshow('thresh', thresh)
+        cv2.imshow('morph', morph)
+        cv2.imshow('mask', mask)
+        cv2.imshow('result', result)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
 
@@ -187,7 +199,10 @@ def main():
         [sg.Text("Selecciona una imagen para procesar")],
         [sg.InputText(key="-FILE-"), sg.FileBrowse()],
         [sg.Text("Tamaño de Morfología:"), sg.InputText(key="-SIZE-", size=(10, 1), default_text="10")],
-        [sg.Checkbox("OBJ", key="-OBJECT-", default=True)],
+        [sg.Checkbox("Mostrar numero nucleo", key="-OBJECT-", default=True)],
+        [sg.Checkbox("Mostrar centroide", key="-CENTROID-", default=True)],
+        [sg.Checkbox("Guardar imagenes", key="-SAVE-", default=True)],
+        [sg.Checkbox("Mostrar imagenes", key="-SHOW-", default=True)],
         [sg.Button("Procesar"), sg.Button("Salir")]
     ]
 
@@ -204,8 +219,11 @@ def main():
             ruta_imagen = values["-FILE-"]
             size = int(values["-SIZE-"]) 
             show_object = values["-OBJECT-"]
+            show_centroid = values["-CENTROID-"]
+            save_image = values["-SAVE-"]
+            show_results = values["-SHOW-"]
             if ruta_imagen:
-                process_image(ruta_imagen,size,show_object)
+                process_image(ruta_imagen,size,show_object,show_centroid,save_image,show_results)
 
     # Cerrar la ventana de la aplicación
     window.close()
