@@ -25,6 +25,25 @@ En la carpeta [Fitting_Elipse](./Fitting_Elipse) podemos apreciar los resultados
 En la carpeta [Countour_Aproximation](./Countour_Aproximation) podemos apreciar los resultados con dicha técnica para los contornos que se encuentra explicado en [explicacion_comparativa.md](./Countour_Aproximation/explicacion_comparativa.md). Es la segunda mejor opción pero finalmente se utilizó otro metodo. Este metodo se podría profundizar mas ajustado en valor de epsilon.
 
 ## Resultado final detección de nucleos
+Finalmente para la detección de contornos de una manera precisa se ha utilizado el metodo de findcontours de OpenCV además de funciones de la librería Imutils para ordenar los contornos de derecha a izquierda para posteriormente ordenar los cuatro puntos que van a definir el contorno de una manera precisa que además se pueden utilizar para calcualr las distancías entre ellos. Previo al proceso se descartan los contornos de un tamaño muy grande y un tamaño muy pequeño para eliminar ruido y contornos que no nos interesan.
 
+Además de realizar la numeración de los mismos para poder identificarlos de una manera mas sencilla en el caso que fuera necesario.
+
+
+Estos resultados se pueden observar en la carpeta [Final_detection](./Final_detection) donde se encuentran los resultados de las imagenes de la playa de Benidorm.
 
 ## Comparativa de resultados
+A continuación se muestran las comparativas entre cada uno de los resultados, la cuales también se pueden ver en la carpeta [Comparativa](./Comparativas).
+#### Final vs normales
+![FinalvsNormales](./Comparativas/finalvsnormales.png)
+#### Final vs Convex Hull
+![FinalvsConvex](./Comparativas/finalvsconvexhull.png)
+#### Final vs Bounding Rectangle
+![FinalvsBounding](./Comparativas/finalvsrectangle.png)
+#### Final vs Minimum Enclosing Circle
+![FinalvsCircle](./Comparativas/finalvsminimum.png)
+#### Final vs Fitting Elipse
+![FinalvsElipse](./Comparativas/finalvselipse.png)
+#### Final vs Countour Aproximation
+![FinalvsAproximation](./Comparativas/finalvscntaprox.png)
+

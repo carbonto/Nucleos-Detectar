@@ -112,7 +112,7 @@ def process_image(file,size,show_object):
     result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
     #draw contours
-    thick_countours = 1
+    thick_countours = 2
     cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)  ## External better than tree for this case because we only want the external contour
     #cv2.drawContours(result, cnts, -1, (0,255,0), thick_countours)
 
@@ -152,7 +152,7 @@ def process_image(file,size,show_object):
         print("")
 
         # loop over the original points and draw them
-        size_points = 2
+        size_points = 4
         for ((x, y), color) in zip(rect, colors):
             cv2.circle(result, (int(x), int(y)), size_points, color, -1)
         
