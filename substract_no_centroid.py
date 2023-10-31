@@ -81,7 +81,7 @@ def get_color_ranges(file):
     }
     return color_ranges.get(file_name, (None, None))
 
-def process_image(file,size,show_object,show_centroid,save_image,show_results):
+def process_image(file,size,show_object,show_centroid,save_image,show_results,output_dir,save_preprocess,thick_countours,size_points,size_object):
     # Load image
     img = cv2.imread(file)
     img= cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -115,18 +115,18 @@ def process_image(file,size,show_object,show_centroid,save_image,show_results):
     result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
 
     #draw contours
-    thick_countours = 1
     cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)  ## External better than tree for this case because we only want the external contour
     #cv2.drawContours(result, cnts, -1, (0,255,0), thick_countours)
 
     cnts = cnts[0] if imutils.is_cv4() else cnts[1]
 
-    # sort the contours from left-to-right and initialize the bounding box
-    # point colors
+    # sort the contours from left-to-right and initialize the bounding box point colors
+    # also you can sort rigth to left or top to bottom or bottom to top
     (cnts, _) = contours.sort_contours(cnts)
     #colors = ((0, 0, 255), (240, 0, 159), (255, 0, 0), (255, 255, 0))
     colors = ((0, 0, 255), (240, 0, 159), (0, 165, 255), (255, 255, 0),
         (255, 0, 255))
+    
     # loop over the contours individually
     for (i, c) in enumerate(cnts):
         # if the contour is not sufficiently large, ignore it
@@ -156,7 +156,7 @@ def process_image(file,size,show_object,show_centroid,save_image,show_results):
             center_y = int((rect[0][1] + rect[1][1] + rect[2][1] + rect[3][1]) / 4)
 
             # Dibujar un círculo en el centro
-            cv2.circle(result, (center_x, center_y), 2, (0, 255, 0), -1)
+            cv2.circle(result, (center_x, center_y),size_points, (0, 255, 0), -1)
 
 
         # show the re-ordered coordinates
@@ -164,7 +164,6 @@ def process_image(file,size,show_object,show_centroid,save_image,show_results):
         print("")
 
         # loop over the original points and draw them
-        size_points = 2
         for ((x, y), color) in zip(rect, colors):
             cv2.circle(result, (int(x), int(y)), size_points, color, -1)
         
@@ -179,10 +178,11 @@ def process_image(file,size,show_object,show_centroid,save_image,show_results):
             # cv2.waitKey(0)
 
     if save_image:
-        cv2.imwrite('beach_thresh.jpg', thresh)
-        cv2.imwrite('beach_morph.jpg', morph)
-        cv2.imwrite('beach_mask.jpg', mask)
-        cv2.imwrite('beach_result.jpg', result)
+        if save_preprocess:
+            cv2.imwrite(os.path.join(output_dir,'beach_thresh.jpg'), thresh)
+            cv2.imwrite(os.path.join(output_dir,'beach_morph.jpg'), morph)
+            cv2.imwrite(os.path.join(output_dir,'beach_mask.jpg'), mask)
+        cv2.imwrite(os.path.join(output_dir,'beach_result.jpg'), result)
     if show_results:
         cv2.imshow('thresh', thresh)
         cv2.imshow('morph', morph)
@@ -203,11 +203,17 @@ def main():
         [sg.Checkbox("Mostrar centroide", key="-CENTROID-", default=True)],
         [sg.Checkbox("Guardar imagenes", key="-SAVE-", default=True)],
         [sg.Checkbox("Mostrar imagenes", key="-SHOW-", default=True)],
+        [sg.Checkbox("Guardar preprocesos", key="-SAVE_PREPROCESS-", default=False)],
+        [sg.Text("Directorio de salida"),sg.InputText(key="-OUTPUT-"), sg.FolderBrowse()],
+        [sg.Text("Debug options")],
+        [sg.Text("Thick contour:"), sg.InputText(key="-CONTOUR-", size=(10, 1), default_text="1")],
+        [sg.Text("Size points:"), sg.InputText(key="-SIZE_POINTS-", size=(10, 1), default_text="2")],
+        [sg.Text("Size object:"), sg.InputText(key="-SIZE_OBJECT-", size=(10, 1), default_text="0.4")],
         [sg.Button("Procesar"), sg.Button("Salir")]
     ]
 
     #Create window application
-    window = sg.Window("Procesador de Imágenes", layout)
+    window = sg.Window("Procesador de Imágenes",layout)
 
     # Event loop to process "events" and get the "values" of the inputs
     while True:
@@ -215,15 +221,26 @@ def main():
 
         if event == sg.WINDOW_CLOSED or event == "Salir":
             break
-        elif event == "Procesar":
+
+        if event == "Procesar":
             ruta_imagen = values["-FILE-"]
             size = int(values["-SIZE-"]) 
             show_object = values["-OBJECT-"]
             show_centroid = values["-CENTROID-"]
             save_image = values["-SAVE-"]
             show_results = values["-SHOW-"]
+            output_dir = values["-OUTPUT-"]
+            save_preprocess = values["-SAVE_PREPROCESS-"]
+            thick_countours = int(values["-CONTOUR-"])
+            size_points = int(values["-SIZE_POINTS-"])
+            size_object = float(values["-SIZE_OBJECT-"])
+
+            if not os.path.exists(output_dir):
+                sg.popup_error("Directorio de salida no existe")
+                continue
+
             if ruta_imagen:
-                process_image(ruta_imagen,size,show_object,show_centroid,save_image,show_results)
+                process_image(ruta_imagen,size,show_object,show_centroid,save_image,show_results,output_dir,save_preprocess,thick_countours,size_points,size_object)
 
     # Cerrar la ventana de la aplicación
     window.close()
