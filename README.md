@@ -6,6 +6,7 @@
   - [Requerimientos](#requerimientos)
   - [Rangos threshold para detección de nucleos](#rangos-threshold-para-detección-de-nucleos)
   - [Eliminar arena de la imagen](#eliminar-arena-de-la-imagen)
+  - [Interfaz gráfica](#interfaz-gráfica)
   - [Pruebas con red neuronal SAM(Segment Anything Model)](#pruebas-con-red-neuronal-samsegment-anything-model)
   - [Calculo distancia en pixeles](#calculo-distancia-en-pixeles)
   - [Resultados](#resultados)
@@ -14,13 +15,14 @@
     - [Pruebas con red neuronal SAM(Segment Anything Model)](#pruebas-con-red-neuronal-samsegment-anything-model-1)
 
 ## Requerimientos
-- Python 3.6
+- Python >= 3.8
 - OpenCV 3.4.2
 - Numpy 1.16.4
 - Matplotlib 3.1.0
 - Scipy 1.3.0
 - Imutils 0.5.2
 - argparse 1.1
+- PySimpleGUI 4.18.2
 ## Rangos threshold para detección de nucleos
 Para saber los rangos de threshold en hsv para realizar la detección de nucleos, se utilizó el siguiente script:
 
@@ -42,6 +44,18 @@ Para realizar este proceso se ha utilizado el siguiente script:
 Además se ha realizado otro script en el cual de los contornos detectados se calcula el centroide de cada uno para poder calcular las distancias entre ellos de esa forma poder identificar los grupos de personas que se encuentran en la playa. Este script es el siguiente:
 
 ``` substract.py ```
+
+## Interfaz gráfica
+Se ha creado una interfaz grafica utilizando la librería PySimpleGui para poder realizar la detección de los nucleos de la playa de una forma mas sencilla y visual. Además de permitir modificar ciertos parametros como el tamaño de la elipse para la apertura y cierre de la imagen, o como otras opciones mas internas como tamaños de ciertas lineas etc... También permite al usuario decidir si quiere guardar las imagenes o mostrarlas , o si requiere los preprocesos realizados para llegar al resultado final.
+
+
+El aspecto de la interfaz es el siguiente:
+![Captura_interfaz](./Raw_Images/Captura_interfaz.png)
+### Opciones interfaz
+- **Imagen**: Permite seleccionar la imagen que se quiere procesar.
+- **Tamaño morfologia**: Permite modificar el tamaño de la elipse para la apertura y cierre de la imagen.
+- **Mostrar centroide**: Permite mostrar el centroide de cada nucleo detectado.
+
 ## Pruebas con red neuronal SAM(Segment Anything Model)
 Se han realizado pruebas de segmentación con la SAM ya que este modelo nos permite realizar una segmentación de la imagen sin un entrenamiento previo de lo que, queremos detectar en la imagen. Ya que el modelo es de gran tamaño se han realizado las pruebas en google colab, para ello se ha utilizado el siguiente script:
 
