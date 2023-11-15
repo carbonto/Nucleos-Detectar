@@ -52,9 +52,14 @@ Se ha creado una interfaz grafica utilizando la librería PySimpleGui para poder
 El aspecto de la interfaz es el siguiente:
 ![Captura_interfaz](./Raw_Images/Captura_interfaz.png)
 ### Opciones interfaz
-- **Imagen**: Permite seleccionar la imagen que se quiere procesar.
+- **Imagen**: Permite seleccionar la imagen que se quiere procesar. Los formatos de imagen que puede leer son los siguientes: .jpg, .jpeg, .png, .bmp, .tiff, .tif, .ppm, .pgm.
 - **Tamaño morfologia**: Permite modificar el tamaño de la elipse para la apertura y cierre de la imagen.
 - **Mostrar centroide**: Permite mostrar el centroide de cada nucleo detectado.
+- **Guardar imagenes**: Guarda la imagen final con los nucleos detectados.
+- **Mostrar imagenes**: Muestra la imagen final con los nucleos detectados.
+- **Mostrar preprocesos**: Muestra las imagenes de los preprocesos realizados para llegar al resultado final.
+- **Directorio de salida**: Permite seleccionar el directorio donde se guardaran las imagenes.
+- **Debug options**: Opciones para cambiar ciertos parametros internos del script.
 
 ## Pruebas con red neuronal SAM(Segment Anything Model)
 Se han realizado pruebas de segmentación con la SAM ya que este modelo nos permite realizar una segmentación de la imagen sin un entrenamiento previo de lo que, queremos detectar en la imagen. Ya que el modelo es de gran tamaño se han realizado las pruebas en google colab, para ello se ha utilizado el siguiente script:

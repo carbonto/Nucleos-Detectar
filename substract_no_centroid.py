@@ -234,9 +234,24 @@ def main():
             thick_countours = int(values["-CONTOUR-"])
             size_points = int(values["-SIZE_POINTS-"])
             size_object = float(values["-SIZE_OBJECT-"])
+            
+            #Validate image path
+            if not ruta_imagen or not os.path.isfile(ruta_imagen) or not ruta_imagen.lower().endswith(('.png', '.jpg', '.jpeg')):
+                sg.popup_error("Selecciona una imagen valida para procesar")
+                continue
 
+            #Validate image output directory
             if not os.path.exists(output_dir):
                 sg.popup_error("Directorio de salida no existe")
+                continue
+            
+            #Validate size input
+            try:
+                size = int(size)
+                if size <= 0:
+                    raise ValueError
+            except ValueError:
+                sg.popup_error("Por favor ingresa un tamaño de morfología valido")
                 continue
 
             if ruta_imagen:
