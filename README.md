@@ -24,6 +24,25 @@
 - Imutils 0.5.2
 - argparse 1.1
 - PySimpleGUI 4.18.2
+## Conteo de personas entrando y saliendo de la playa
+Se utiliza una red neuronal con diversos modelos la cual consiste de manera generalizada en el uso de bytetrack. Dadas las limitaciones de git no se puede incluir la red en el repositorio. En cambio se han añadido los datos que nos ha devuelto la red y los videos del conteo se encuentran subidos a onedrive
+### Datos .csv del conteo
+En la carpeta ```Datos_Conteo``` se encuentran los ficheros .csv que nos devuelve la red
+### Procesamiento de los datos
+Para procesar dichos datos del script y obtener las graficas para determinar la afluencia que ha habido en la playa se ha utilizado el siguiente script:
+
+``` process_csv.py ```
+
+Al ejecutar el fichero se puede ver la siguiente interfaz grafica:
+![Captura_interfaz](./Raw_Images/Interfaz_process_csv.png)
+
+- **Archivo**: Permite seleccionar el fichero csv que se quiere procesar.
+- **Diagrama de lineas**: Muestra el diagrama de lineas de la afluencia de la playa a lo largo del tiempo en el cual se han tomado los datos.
+- **Diagrama de barras**: Muestra el diagrama de barras de la afluencia de la playa con el numero total de una manera mas rapida.
+
+
+
+
 ## Rangos threshold para detección de nucleos
 Para saber los rangos de threshold en hsv para realizar la detección de nucleos, se utilizó el siguiente script:
 
