@@ -104,24 +104,13 @@ def diagrama_barras(file_path):
     # Clean column names (remove extra spaces)
     data.columns = data.columns.str.strip()
 
-    # Creating a vertical bar chart with "IN" and "OUT" labels on the x-axis and total counts on the y-axis
-
     # Calculating the total counts for IN and OUT
     total_count_in = data['total_count(in)(line1)'].iloc[-1]
     total_count_out = data['total_count(out)(line1)'].iloc[-1]
 
-    # X-axis labels
-    x_labels = ['IN', 'OUT']
-
-    # Y-axis values
-    y_values = [total_count_in, total_count_out]
-    
-    plt.figure(figsize=(10, 6))
-
-    bars = plt.bar(x_labels, y_values, color=['blue', 'orange'])
     if genero:
         # X-axis labels
-        x_labels = ['IN', 'OUT','MAN IN+OUT','WOMAN IN+OUT']
+        x_labels = ['IN', 'OUT','MAN (IN+OUT)','WOMAN (IN+OUT)']
 
         increment_man = data['man'].cumsum().iloc[-1]
         increment_woman =data['woman'].cumsum().iloc[-1]
@@ -131,7 +120,19 @@ def diagrama_barras(file_path):
         plt.figure(figsize=(10, 6))
 
         bars = plt.bar(x_labels, y_values, color=['blue', 'orange','green','red'])
+    else:
+        # Creating a vertical bar chart with "IN" and "OUT" labels on the x-axis and total counts on the y-axis
 
+        # X-axis labels
+        x_labels = ['IN', 'OUT']
+
+        # Y-axis values
+        y_values = [total_count_in, total_count_out]
+        
+        plt.figure(figsize=(10, 6))
+
+        bars = plt.bar(x_labels, y_values, color=['blue', 'orange'])
+    
     plt.title('Conteo de personas al entrar y salir de la zona de la playa')
     plt.xlabel('Entrada o salida')
     plt.ylabel('Conteo total')

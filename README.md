@@ -42,9 +42,11 @@ Al ejecutar el fichero se puede ver la siguiente interfaz grafica:
 - **Archivo**: Permite seleccionar el fichero csv que se quiere procesar.
 - **Diagrama de lineas**: Muestra el diagrama de lineas de la afluencia de la playa a lo largo del tiempo en el cual se han tomado los datos.
 - **Diagrama de barras**: Muestra el diagrama de barras de la afluencia de la playa con el numero total de una manera mas rapida.
-
-
-
+- **Formato segundos**: Muestra el formato de los segundos en el eje x del diagrama de lineas.
+- **Formato minutos**: Muestra el formato de los minutos en el eje x del diagrama de lineas.
+- **Formato horas**: Muestra el formato de las horas en el eje x del diagrama de lineas.
+- **Intervalo**: Permite modificar el intervalo de tiempo que se muestra en el eje x del diagrama de lineas.
+- **Genero**: Muestra el diagrama de barras de la afluencia de la playa por genero.
 
 ## Rangos threshold para detección de nucleos
 Para saber los rangos de threshold en hsv para realizar la detección de nucleos, se utilizó el siguiente script:
