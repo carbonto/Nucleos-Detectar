@@ -1,78 +1,115 @@
 import cv2
 import numpy as np
 import argparse
-
+import os
+import PySimpleGUI as sg
 def nothing(x):
     pass
 
 #Load image with argparse1
 
-ap = argparse.ArgumentParser()
-ap.add_argument("--image", required=True, help="Path to the image")
-args = vars(ap.parse_args())
+# ap = argparse.ArgumentParser()
+# ap.add_argument("--image", required=True, help="Path to the image")
+# args = vars(ap.parse_args())
 
-# Load image
-image_path = args["image"]
-image = cv2.imread(image_path)
+def bgr_2_hsv(file):   
+    # Load image
+    image_path = file
+    image = cv2.imread(image_path)
 
-#Resize image to 1280x720
-up_width = 1280
-up_height = 720
-up_points = (up_width, up_height)
-image = cv2.resize(image, up_points, interpolation= cv2.INTER_LINEAR)
+    #Resize image to 1280x720
+    up_width = 1280
+    up_height = 720
+    up_points = (up_width, up_height)
+    image = cv2.resize(image, up_points, interpolation= cv2.INTER_LINEAR)
 
-# Create a window
-cv2.namedWindow('image')
+    # Create a window
+    cv2.namedWindow('image')
 
-# Create trackbars for color change
-# Hue is from 0-179 for Opencv
-cv2.createTrackbar('HMin', 'image', 0, 179, nothing)
-cv2.createTrackbar('SMin', 'image', 0, 255, nothing)
-cv2.createTrackbar('VMin', 'image', 0, 255, nothing)
-cv2.createTrackbar('HMax', 'image', 0, 179, nothing)
-cv2.createTrackbar('SMax', 'image', 0, 255, nothing)
-cv2.createTrackbar('VMax', 'image', 0, 255, nothing)
+    # Create trackbars for color change
+    # Hue is from 0-179 for Opencv
+    cv2.createTrackbar('HMin', 'image', 0, 179, nothing)
+    cv2.createTrackbar('SMin', 'image', 0, 255, nothing)
+    cv2.createTrackbar('VMin', 'image', 0, 255, nothing)
+    cv2.createTrackbar('HMax', 'image', 0, 179, nothing)
+    cv2.createTrackbar('SMax', 'image', 0, 255, nothing)
+    cv2.createTrackbar('VMax', 'image', 0, 255, nothing)
 
-# Set default value for Max HSV trackbars
-cv2.setTrackbarPos('HMax', 'image', 179)
-cv2.setTrackbarPos('SMax', 'image', 255)
-cv2.setTrackbarPos('VMax', 'image', 255)
+    # Set default value for Max HSV trackbars
+    cv2.setTrackbarPos('HMax', 'image', 179)
+    cv2.setTrackbarPos('SMax', 'image', 255)
+    cv2.setTrackbarPos('VMax', 'image', 255)
 
-# Initialize HSV min/max values
-hMin = sMin = vMin = hMax = sMax = vMax = 0
-phMin = psMin = pvMin = phMax = psMax = pvMax = 0
+    # Initialize HSV min/max values
+    hMin = sMin = vMin = hMax = sMax = vMax = 0
+    phMin = psMin = pvMin = phMax = psMax = pvMax = 0
 
-while(1):
-    # Get current positions of all trackbars
-    hMin = cv2.getTrackbarPos('HMin', 'image')
-    sMin = cv2.getTrackbarPos('SMin', 'image')
-    vMin = cv2.getTrackbarPos('VMin', 'image')
-    hMax = cv2.getTrackbarPos('HMax', 'image')
-    sMax = cv2.getTrackbarPos('SMax', 'image')
-    vMax = cv2.getTrackbarPos('VMax', 'image')
+    while(1):
+        # Get current positions of all trackbars
+        hMin = cv2.getTrackbarPos('HMin', 'image')
+        sMin = cv2.getTrackbarPos('SMin', 'image')
+        vMin = cv2.getTrackbarPos('VMin', 'image')
+        hMax = cv2.getTrackbarPos('HMax', 'image')
+        sMax = cv2.getTrackbarPos('SMax', 'image')
+        vMax = cv2.getTrackbarPos('VMax', 'image')
 
-    # Set minimum and maximum HSV values to display
-    lower = np.array([hMin, sMin, vMin])
-    upper = np.array([hMax, sMax, vMax])
+        # Set minimum and maximum HSV values to display
+        lower = np.array([hMin, sMin, vMin])
+        upper = np.array([hMax, sMax, vMax])
 
-    # Convert to HSV format and color threshold
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(hsv, lower, upper)
-    result = cv2.bitwise_and(image, image, mask=mask)
+        # Convert to HSV format and color threshold
+        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        mask = cv2.inRange(hsv, lower, upper)
+        result = cv2.bitwise_and(image, image, mask=mask)
 
-    # Print if there is a change in HSV value
-    if((phMin != hMin) | (psMin != sMin) | (pvMin != vMin) | (phMax != hMax) | (psMax != sMax) | (pvMax != vMax) ):
-        print("(hMin = %d , sMin = %d, vMin = %d), (hMax = %d , sMax = %d, vMax = %d)" % (hMin , sMin , vMin, hMax, sMax , vMax))
-        phMin = hMin
-        psMin = sMin
-        pvMin = vMin
-        phMax = hMax
-        psMax = sMax
-        pvMax = vMax
+        # Print if there is a change in HSV value
+        if((phMin != hMin) | (psMin != sMin) | (pvMin != vMin) | (phMax != hMax) | (psMax != sMax) | (pvMax != vMax) ):
+            print("(hMin = %d , sMin = %d, vMin = %d), (hMax = %d , sMax = %d, vMax = %d)" % (hMin , sMin , vMin, hMax, sMax , vMax))
+            phMin = hMin
+            psMin = sMin
+            pvMin = vMin
+            phMax = hMax
+            psMax = sMax
+            pvMax = vMax
 
-    # Display result image
-    cv2.imshow('image', result)
-    if cv2.waitKey(10) & 0xFF == ord('q'):
-        break
+        # Display result image
+        cv2.imshow('image', result)
+        if cv2.waitKey(10) & 0xFF == ord('q'):
+            break
 
-cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
+
+def main():
+    #Define design of graphical interface 
+    layout = [
+        [sg.Text("Selecciona una imagen para obtener rangos HSV")],
+        [sg.InputText(key="-FILE-"), sg.FileBrowse()],
+        [sg.Button("Procesar"), sg.Button("Salir")]
+    ]
+
+    #Create window application
+    window = sg.Window("Obtener rangos de HSV",layout)
+
+    # Event loop to process "events" and get the "values" of the inputs
+    while True:
+        event, values = window.read()
+
+        if event == sg.WINDOW_CLOSED or event == "Salir":
+            break
+
+        if event == "Procesar":
+            ruta_imagen = values["-FILE-"]
+            #bgr_2_hsv(ruta_imagen)
+
+            if not ruta_imagen or not os.path.isfile(ruta_imagen) or not ruta_imagen.lower().endswith(('.png', '.jpg', '.jpeg')):
+                sg.popup_error("Selecciona una imagen valida para procesar")
+                continue
+
+            if ruta_imagen:
+                bgr_2_hsv(ruta_imagen)
+
+    #Close window application
+    window.close()
+
+if __name__ == '__main__':
+    main()
